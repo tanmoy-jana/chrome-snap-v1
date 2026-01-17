@@ -21,6 +21,14 @@
     "scripting",
     "tabs"
   ],
+  "commands": {
+    "take-screenshot": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+S"
+      },
+      "description": "Take screenshot"
+    }
+  },
   "background": {
     "service_worker": "background.js"
   },

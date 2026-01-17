@@ -1,3 +1,14 @@
+// Listen for keyboard shortcut
+chrome.commands.onCommand.addListener(async (command) => {
+    if (command === 'take-screenshot') {
+        const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+        chrome.scripting.executeScript({
+            target: { tabId: tab.id },
+            function: activateSelectionMode
+        });
+    }
+});
+
 // Listen for extension icon click
 chrome.action.onClicked.addListener(async (tab) => {
     // Activate selection mode on the current tab
