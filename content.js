@@ -310,7 +310,21 @@ function cropAndDownload(dataUrl, area) {
         const croppedImageUrl = canvas.toDataURL('image/png');
         const link = document.createElement('a');
         link.href = croppedImageUrl;
-        link.download = `screenshot-${Date.now()}.png`;
+        
+        // Generate filename with page title and formatted date
+        const pageTitle = document.title.replace(/[/\\?%*:|"<>]/g, '-').substring(0, 50);
+        const now = new Date();
+        const day = String(now.getDate()).padStart(2, '0');
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const year = now.getFullYear();
+        const hours = now.getHours();
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const period = hours >= 12 ? 'pm' : 'am';
+        const displayHours = String(hours % 12 || 12).padStart(2, '0');
+        const formattedDate = `${day}-${month}-${year}-${displayHours}-${minutes}${period}`;
+        
+        //link.download = `${pageTitle}-${formattedDate}.png`;
+        link.download = `${pageTitle}.png`;
         link.click();
     };
     img.src = dataUrl;
