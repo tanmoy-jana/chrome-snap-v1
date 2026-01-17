@@ -102,17 +102,38 @@ function getHandleStyles(position) {
 }
 
 function showCenteredSelectionBox() {
-    const width = 300;
-    const height = 400;
-    const left = (window.innerWidth - width) / 2;
-    const top = (window.innerHeight - height) / 2;
-    
-    updateSelectionBox(left, top, width, height);
-    
-    // Position capture button
-    captureButton.style.display = 'block';
-    captureButton.style.left = `${left}px`;
-    captureButton.style.top = `${top + height + 10}px`;
+    // Try to load the last saved box dimensions and position
+    chrome.storage.local.get(['lastSnapBox'], (result) => {
+        let width = 300;
+        let height = 400;
+        let left = (window.innerWidth - width) / 2;
+        let top = (window.innerHeight - height) / 2;
+        
+        // Use saved dimensions if available
+        if (result.lastSnapBox) {
+            width = result.lastSnapBox.width;
+            height = result.lastSnapBox.height;
+            left = result.lastSnapBox.left;
+            top = result.lastSnapBox.top;
+            
+            // Ensure the box is still within viewport bounds
+            if (left + width > window.innerWidth) {
+                left = window.innerWidth - width - 20;
+            }
+            if (top + height > window.innerHeight) {
+                top = window.innerHeight - height - 20;
+            }
+            if (left < 0) left = 10;
+            if (top < 0) top = 10;
+        }
+        
+        updateSelectionBox(left, top, width, height);
+        
+        // Position capture button
+        captureButton.style.display = 'block';
+        captureButton.style.left = `${left}px`;
+        captureButton.style.top = `${top + height + 10}px`;
+    });
 }
 
 function createCaptureButton() {
@@ -168,6 +189,9 @@ function onMouseUp(e) {
         const rect = selectionBox.getBoundingClientRect();
         captureButton.style.left = `${rect.left}px`;
         captureButton.style.top = `${rect.bottom + 10}px`;
+        
+        // Save the current box dimensions and position
+        saveSnapBoxState(rect);
     }
     
     isDragging = false;
@@ -224,6 +248,9 @@ function updateSelectionBox(left, top, width, height) {
 
 async function captureScreenshot() {
     const rect = selectionBox.getBoundingClientRect();
+
+    //const rect = selectionBox.getBoundingClientRect();
+    saveSnapBoxState(rect);
     
     // Hide the selection UI temporarily
     selectionBox.style.display = 'none';
@@ -289,8 +316,25 @@ function cropAndDownload(dataUrl, area) {
     img.src = dataUrl;
 }
 
+function saveSnapBoxState(rect) {
+    const boxState = {
+        width: rect.width,
+        height: rect.height,
+        left: rect.left,
+        top: rect.top
+    };
+    
+    chrome.storage.local.set({ lastSnapBox: boxState });
+}
+
 function deactivateSelectionMode() {
     isSelectionMode = false;
+    
+    // Save the final box state before cleanup
+    if (selectionBox) {
+        const rect = selectionBox.getBoundingClientRect();
+        //saveSnapBoxState(rect);
+    }
     
     if (overlay) overlay.remove();
     if (selectionBox) {
