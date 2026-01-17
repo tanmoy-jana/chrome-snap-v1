@@ -1,0 +1,21 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <rect width="128" height="128" rx="24" fill="url(#grad1)"/>
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- Note paper -->
+  <rect x="28" y="20" width="72" height="88" rx="4" fill="white" opacity="0.95"/>
+  <!-- Lines -->
+  <path d="M40 40h48v3H40zm0 12h48v3H40zm0 12h48v3H40zm0 12h48v3H40zm0 12h32v3H40z" fill="#667eea" opacity="0.8"/>
+  <!-- Decorative corner fold -->
+  <path d="M92 20v12h8z" fill="#764ba2" opacity="0.3"/>
+  <!-- Plus icon circle -->
+  <circle cx="92" cy="92" r="20" fill="#764ba2"/>
+  <path d="M92 80v24m-12-12h24" stroke="white" stroke-width="4" stroke-linecap="round"/>
+  <!-- Small clock icon -->
+  <circle cx="36" cy="96" r="8" fill="white" opacity="0.9"/>
+  <path d="M36 90v6l4 2" stroke="#667eea" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+</svg>
