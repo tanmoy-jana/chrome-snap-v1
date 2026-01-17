@@ -1,3 +1,17 @@
+// Listen for extension icon click
+chrome.action.onClicked.addListener(async (tab) => {
+    // Activate selection mode on the current tab
+    chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+        function: activateSelectionMode
+    });
+});
+
+function activateSelectionMode() {
+    // Send message to content script to activate selection mode
+    window.postMessage({ type: 'ACTIVATE_SELECTION_MODE' }, '*');
+}
+
 // Listen for messages from content script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.type === 'CAPTURE_SCREENSHOT') {

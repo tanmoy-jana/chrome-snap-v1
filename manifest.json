@@ -4,7 +4,6 @@
   "version": "1.0",
   "description": "Take snapshots and save images directly from your browser.",
   "action": {
-    "default_popup": "popup.html",
     "default_icon": {
       "16": "icon16.png",
       "48": "icon48.png",
